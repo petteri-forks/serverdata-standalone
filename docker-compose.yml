@@ -1,0 +1,31 @@
+version: "3.8"
+services:
+  api:
+    build: ./api
+    restart: always
+    ports:
+      - ${API_PORT}
+    links:
+      - db
+    environment:
+      - SERVER_PORT=${SERVER_PORT}
+      - POSTGRES_DSN=${POSTGRES_DSN}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - ROOT_FIRSTNAME=${ROOT_FIRSTNAME}
+      - ROOT_LASTNAME=${ROOT_LASTNAME}
+      - ROOT_EMAIL=${ROOT_EMAIL}
+      - ROOT_PASSWORD=${ROOT_PASSWORD}
+  db:
+    image: postgres:14
+    restart: always
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - db:/var/lib/postgresql/data
+volumes:
+  db:
+    driver: local
